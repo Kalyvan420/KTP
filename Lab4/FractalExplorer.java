@@ -1,123 +1,87 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.awt.event.*;
 
 public class FractalExplorer {
-
-	private int width;
-	private int height;
-
-	private JImageDisplay display;
-	private Rectangle2D.Double range;
-	private JFrame frame;
-	private JButton button;
-	private Mandelbrot mandelbrot;
-
-	private class resetButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent event) {
-			mandelbrot.getInitialRange(range);
-			FractalExplorer.this.drawFractal();
-		}
-	}
-
-	private class mouseClickListener implements MouseListener {
-
-		public void mouseClicked(MouseEvent e) {
-
-			int x = e.getX();
-			int y = e.getY();
-
-			double xCoord = FractalGenerator.getCoord(range.x, range.x + range.width, display.getWidth(), x);
-			double yCoord = FractalGenerator.getCoord(range.y, range.y + range.height, display.getHeight(), y);
-
-			if (e.getButton() == MouseEvent.BUTTON1) {
-				mandelbrot.recenterAndZoomRange(range, xCoord, yCoord, 0.5);
-			}
-
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				mandelbrot.recenterAndZoomRange(range, xCoord, yCoord, 1.5);
-			}
-
-			FractalExplorer.this.drawFractal();
-		}
-
-		public void mouseEntered(MouseEvent e) {}
-
-		public void mouseExited(MouseEvent e) {}
-
-		public void mousePressed(MouseEvent e) {}
-
-		public void mouseReleased(MouseEvent e) {}
-	}
-
-	public FractalExplorer() {
-		this(600);
-	}
+	private int size;
+	private JImageDisplay imageDisplay;
+	private FractalGenerator fractalGenerator;
+	private Rectangle2D.Double rectRange;
 
 	public FractalExplorer(int size) {
-		this(size, size);
-	}
-
-	public FractalExplorer(int width, int height) {
-		this.width = width;
-		this.height = height;
-
-		this.range = new Rectangle2D.Double();
-
-		this.mandelbrot = new Mandelbrot();
-
-		mandelbrot.getInitialRange(range);
+		this.size = size;
+		this.fractalGenerator = new Mandelbrot();
+		this.rectRange = new Rectangle2D.Double();
+		fractalGenerator.getInitialRange(rectRange);
 	}
 
 	public void createAndShowGUI() {
-		this.frame = new JFrame("Fraktalz");
-		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.frame.setSize(this.width, this.height);
-		this.frame.setResizable(false);
+		JFrame frame = new JFrame("Fractals generator");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.button = new JButton("Reset display");
-		frame.getContentPane().add(BorderLayout.SOUTH, this.button);
+		imageDisplay = new JImageDisplay(size, size);
+		imageDisplay.addMouseListener(new MouseListener());
 
-		button.addActionListener(new resetButtonListener());
+		JButton clearButton = new JButton("Clear");
+		clearButton.addActionListener(new ButtonActionListener());
 
-		this.display = new JImageDisplay(this.frame.getWidth(), this.frame.getHeight());
-		frame.getContentPane().add(BorderLayout.CENTER, this.display);
+		frame.add(imageDisplay, BorderLayout.CENTER);
+		frame.add(clearButton, BorderLayout.SOUTH);
 
-		display.addMouseListener(new mouseClickListener());
-
+		frame.pack();
 		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 
-	public void drawFractal() {
+	private void drawFractal() {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				double x = FractalGenerator.getCoord(rectRange.x, rectRange.x + rectRange.width, size, i);
+				double y = FractalGenerator.getCoord(rectRange.y, rectRange.y + rectRange.width, size, j);
 
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.height; y++) {
-
-				double xCoord = FractalGenerator.getCoord(range.x, range.x + range.width, display.getWidth(), x);
-				double yCoord = FractalGenerator.getCoord(range.y, range.y + range.height, display.getHeight(), y);
-
-				int numOfIter = mandelbrot.numIterations(xCoord, yCoord);
-
-				int rgbColor;
-				if (numOfIter != -1) {
-					float hue = 0.7f + (float) numOfIter / 200f;
-					rgbColor = Color.HSBtoRGB(hue, 1f, 1f);
+				int numIters = fractalGenerator.numIterations(x, y);
+				if (numIters == -1) {
+					imageDisplay.drawPixel(i, j, Color.BLACK.getRGB());
+				} else {
+					float hue = 0.7f + (float) numIters / 200f;
+					int rgbColor = Color.HSBtoRGB(hue, 1f, 1f);
+					imageDisplay.drawPixel(i, j, rgbColor);
 				}
-				else {
-					rgbColor = Color.HSBtoRGB(0, 0, 0);
-				}
-
-
-				display.drawPixel(x, y, new Color(rgbColor));
-
 			}
 		}
+
+		imageDisplay.repaint();
 	}
 
 	public static void main(String[] args) {
-		FractalExplorer explorer = new FractalExplorer(700);
+		FractalExplorer explorer = new FractalExplorer(800);
 		explorer.createAndShowGUI();
 		explorer.drawFractal();
+	}
+
+	class ButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println(e.getActionCommand());
+			fractalGenerator.getInitialRange(rectRange);
+			imageDisplay.clearImage();
+			imageDisplay.repaint();
+			drawFractal();
+		}
+	}
+
+	class MouseListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			super.mouseClicked(e);
+			double x = FractalGenerator.getCoord(rectRange.x, rectRange.x + rectRange.width, size, e.getX());
+			double y = FractalGenerator.getCoord(rectRange.y, rectRange.y + rectRange.width, size, e.getY());
+			fractalGenerator.recenterAndZoomRange(rectRange, x, y, 0.5);
+			drawFractal();
+		}
 	}
 }
