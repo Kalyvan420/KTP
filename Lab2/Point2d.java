@@ -1,9 +1,6 @@
 public class Point2d {
-    /**Кордината X**/
     private double xCoord;
-    /**Кордината Y**/
     private double yCoord;
-    /** Конструктор инициализации **/
     public Point2d (double x, double y){
         xCoord = x;
         yCoord = y;
@@ -13,15 +10,13 @@ public class Point2d {
         //Вызовите конструктор с двумя параметрами и определите источник.
         this (0,0);
     }
-    /** Возвращение координаты X **/
-    public double getX2(){
+    public double getX2(){// Возвр коорд X
         return xCoord;
     }
-    /** Возвращение координаты Y **/
-    public double getY2(){
+    public double getY2(){// Возвр коорд y
         return yCoord;
     }
-    /** Установка значения координаты X **/
+    /** Установка значения координаты X и Y**/
     public void setX2(double val){
         xCoord = val;
     }
@@ -29,9 +24,13 @@ public class Point2d {
         yCoord = val;
     }
     public static boolean Check2D(Point2d first, Point2d two){
-        if ((first.getX2() == two.getX2()) && (first.getY2() == two.getY2())){
+        if ((first.getX2() == two.getX2()) && (first.getY2() == two.getY2()))
+        {
             return true;
         }
-        else {return false;}
+        else
+            {
+            return false;
+            }
     }
 }

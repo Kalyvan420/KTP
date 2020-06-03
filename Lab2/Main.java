@@ -7,7 +7,7 @@ public class Main {
         DecimalFormat df = new DecimalFormat("###.##");
         /**Ввод данных с консоли **/
         Scanner in = new Scanner(System.in);
-        /** Ввод координат для первой точки **/
+        /** Ввод первой точки **/
         System.out.println("Введите координаты первой точки");
         System.out.println("Введите  X");
         x=in.nextDouble();
@@ -17,7 +17,7 @@ public class Main {
         z=in.nextDouble();
         Point3d onepoint = new Point3d(x, y, z);//создание первой точки
 
-        /** Ввод координат для второй точки **/
+        /** Ввод второй точки **/
         System.out.println("Введите координаты второй точки");
         System.out.println("Введите  X");
         x=in.nextDouble();
@@ -27,7 +27,7 @@ public class Main {
         z=in.nextDouble();
         Point3d twopoint = new Point3d(x, y, z);//создание второй точки
 
-        /** Ввод координат для третьей точки **/
+        /** Ввод третьей точки **/
         System.out.println("Введите координаты третьей точки");
         System.out.println("Введите  X");
         x=in.nextDouble();
@@ -41,10 +41,10 @@ public class Main {
         if ((Point3d.Check3D(onepoint,twopoint) == false)
                 &&(Point3d.Check3D(onepoint,threepoint) == false)
                 &&(Point3d.Check3D(twopoint,threepoint) == false))
-        {System.out.println("Точки не равны между собой, программа может продолжать работу");}
-        else {System.out.println("Точки имеют одинаковые координаты, программа будет остановлена"); System.exit(0);}
+        {System.out.println("Точки не равны, продолжение выполнения");}
+        else {System.out.println("Точки имеют одинаковые координаты, конец программы"); System.exit(0);}
 
-        /** Вычисление площади треугольника **/
+        /**площадь треугольника **/
         double P = Point3d.computeArea(onepoint,twopoint,threepoint);
         System.out.println("Площадь треугольника равна = " + df.format(P));
 

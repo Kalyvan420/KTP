@@ -12,9 +12,7 @@ public class Point3d extends Point2d {
     public Point3d(){
         this (0.0,0.0,0.0);
     }
-
-    /** Возвращение координаты Z **/
-    private double getZ3(){
+    private double getZ3(){//Возвр коорд z
         return ZCoord;
     }
 
@@ -23,7 +21,7 @@ public class Point3d extends Point2d {
         ZCoord = val;
     }
 
-    /** Функция сравнения двух точек **/
+    /**сравнение двух точек **/
     public static boolean Check3D(Point3d first, Point3d two){
         if ((first.getX2()==two.getX2())&&(first.getY2()==two.getY2())&&(first.getZ3()==two.getZ3())){return true;}
         else return false;
