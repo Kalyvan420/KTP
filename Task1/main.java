@@ -3,48 +3,48 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         Scanner sc= new Scanner(System.in);
-        /* 1) */
+        // 1)
         System.out.println("1) ");
         System.out.println(3%4);
         System.out.println(5%5);
-        /* 2) */
+        // 2)
         System.out.println("2) Введите основание и высоту треуг.: ");
         double a=sc.nextDouble();
         double h=sc.nextDouble();
         System.out.println("Площадь треуг.:" +triArea(a,h));
-        /* 3) */
+        // 3)
         System.out.println("3) Введите кол-во куриц, коров и свиней: ");
         int chick=sc.nextInt();
         int cows=sc.nextInt();
         int pigs=sc.nextInt();
         System.out.println("Общее кол-во ног скота: " +legs(chick,cows,pigs));
-        /* 4) */
+        // 4)
         System.out.println("4) Введите вер. выигрыша, размер выигрыша, ставку: ");
         double prob=sc.nextDouble();
         double prize=sc.nextDouble();
         double pay=sc.nextDouble();
         System.out.println(gamb(prob,prize,pay));
-        /* 5) */
+        // 5)
         System.out.println("5) Введите три числа: ");
         int ch1=sc.nextInt();
         int ch2=sc.nextInt();
         int ch3=sc.nextInt();
         System.out.println("Дествие: ");
         act(ch1,ch2,ch3);
-        /* 6) */
+        // 6)
         System.out.println("6) Введите символ: ");
         char aC=sc.next().charAt(0);
         System.out.println("ASCII код символа: " +aCode(aC));
-        /* 7) */
+        // 7)
         System.out.println("7) Введите число:");
         int cA= sc.nextInt();
         System.out.println("Сумма всех цифр до введеного числа: " +addUp(cA));
-        /* 8) */
+        // 8)
         System.out.println("8) Введите значения двух ребёр треугольника: ");
         int r1=sc.nextInt();
         int r2=sc.nextInt();
         System.out.println("Максимальное значения третьего ребра треугольника: "+ lEdge(r1,r2));
-        /* 9) */
+        // 9)
         System.out.println("9) Введите кол-во элементов массива: ");
         int el=sc.nextInt();
         int pArr[]=new int[el];
@@ -57,7 +57,7 @@ public class main {
         }
 
         System.out.println("Сумма кубов введенных элементов: " +cArr(pArr));
-        /* 10) */
+        // 10)
         System.out.println("10) Введите a, b, c");
         int aM=sc.nextInt();
         int bM=sc.nextInt();
